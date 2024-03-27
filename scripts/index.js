@@ -126,9 +126,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 endGame("Game Over! The word was: " + chosenWord);
             } else if (guessedWord()) {
                 endGame("Congratulations! You guessed the word!");
+                createStars();
             }
         }
     
+        function createStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) { 
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                // Generate random HSL color
+                const hue = Math.random() * 360;
+                const saturation = '100%';
+                const lightness = '50%';
+                star.style.backgroundColor = `hsl(${hue}, ${saturation}, ${lightness})`;
+                stars.appendChild(star);
+            }
+        }
+
         // Function to check if the word is guessed
         function guessedWord() {
             for (const letter of chosenWord) {
@@ -145,10 +162,29 @@ document.addEventListener("DOMContentLoaded", function() {
             restartButton.style.display = "block";
         }
     
+        let starAnimationId = null; // Variable to hold the animation ID
+        
+        // Function to start the star animation
+        function startStarAnimation() {
+            starAnimationId = setInterval(() => {
+                // Code for falling stars animation
+            }, 1000); // Adjust the interval as needed
+        }
+        
+        // Function to stop the star animation
+        function stopStarAnimation() {
+            clearInterval(starAnimationId);
+            // Remove existing stars
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+        }
+        
         // Event listener for the restart button
         restartButton.addEventListener("click", function() {
             categorySelection.style.display = "block";
             gameContainer.style.display = "none";
+            stopStarAnimation(); // Stop the animation when restart button is clicked
         });
     });
+        
     
